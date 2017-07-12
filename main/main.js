@@ -39,7 +39,53 @@ function loadAllItems() {
     }
   ];
 }
-
-function printReceipt(inputs) {
-  console.log('请在此实现练习要求，并改写该行代码。');
+var ldAllItems = loadAllItems();
+// console.log(ldAllItems)
+var inputItems=[
+  'ITEM000000',
+  'ITEM000000',
+  'ITEM000000',
+  'ITEM000000',
+  'ITEM000000',
+  'ITEM000001',
+  'ITEM000001',
+  'ITEM000004'
+]
+function barCount(inputItems) {
+  var outputItems = [];
+  for (var i = 0; i < inputItems.length; i++) {
+    var item = inputItems[i]
+    if (!outputItems[item]) {
+      outputItems[item] = {};
+      outputItems[item].barcode = inputItems[i];
+      outputItems[item].count = 1;
+    } else {
+      outputItems[item].count += 1;
+    }
+  }
+  return outputItems;
 }
+
+var outputItems=barCount(inputItems);
+// console.log(outputItems);
+
+
+function nameUnitPrice(ldAllItems,inputItems) {
+  var ldAllItems = loadAllItems();
+  // console.log(ldAllItems.length);
+  for(var i =0;i<ldAllItems.length;i++) {
+    var outputItems=barCount(inputItems);
+    var item = inputItems[i];
+    if (item==ldAllItems[i][0]){
+      outputItems.push(ldAllItems[i]);
+    }
+  }
+  return outputItems;
+}
+
+var outputItems=nameUnitPrice(ldAllItems,inputItems);
+console.log(outputItems);
+
+
+
+
