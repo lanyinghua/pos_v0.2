@@ -41,7 +41,7 @@ function loadAllItems() {
 }
 var ldAllItems = loadAllItems();
 // console.log(ldAllItems)
-var inputItems=[
+var inputs=[
   'ITEM000000',
   'ITEM000000',
   'ITEM000000',
@@ -52,40 +52,69 @@ var inputItems=[
   'ITEM000004'
 ]
 function barCount(inputItems) {
-  var outputItems = [];
-  for (var i = 0; i < inputItems.length; i++) {
-    var item = inputItems[i]
-    if (!outputItems[item]) {
-      outputItems[item] = {};
-      outputItems[item].barcode = inputItems[i];
-      outputItems[item].count = 1;
-    } else {
-      outputItems[item].count += 1;
+  var items =[];
+  var item={};
+  item.barcode=bar;
+  item.count=0;
+
+  for (var i=0;i<inputItems.length;i++){
+    var bar = inputs[i];
+    if (item.barcode==bar){
+      item.count+=1;
+    }else if (item.barcode!=bar){
+      var item={};
+      item.barcode=bar;
+      item.count=1;
+      items.push(item);
     }
   }
-  return outputItems;
+  return items;
 }
 
-var outputItems=barCount(inputItems);
-// console.log(outputItems);
+var items=barCount(inputs);
+// console.log(items);
 
-
-function nameUnitPrice(ldAllItems,inputItems) {
-  var ldAllItems = loadAllItems();
-  // console.log(ldAllItems.length);
-  for(var i =0;i<ldAllItems.length;i++) {
-    var outputItems=barCount(inputItems);
-    var item = inputItems[i];
-    if (item==ldAllItems[i][0]){
-      outputItems.push(ldAllItems[i]);
+function outputi(items) {
+  var lai=loadAllItems();
+  for(var i=0;i<items.length;i++) {
+    for (var j = 0; j < lai.length; j++) {
+      var item = items[i];
+      if (item.barcode == lai[j].barcode) {
+        item.name = lai[j].name;
+        item.unit = lai[j].unit;
+        item.price = lai[j].price;
+        item.subtotal = item.price*item.count;
+      }
     }
   }
-  return outputItems;
+return items;
+}
+var outputItems=outputi(items);
+// console.log(outputi(items));
+
+function n(outputItems) {
+  var total=0;
+  for (var i=0 ;i<outputItems.length;i++){
+  total += outputItems[i].subtotal;
+  }
+   return total;
+}
+// console.log(n(outputItems));
+var total=n(outputItems);
+
+function printReceipt(inputs) {
+  var items=barCount(inputs);
+  var outputItems=outputi(items);
+  var total=n(outputItems);
+  var content = "***<"+"没钱赚商店>收据"+"***\n";
+  for (var i=0;i<items.length;i++) {
+    content += "名称："+items[i].name+"，数量："+items[i].count+items[i].unit+"，单价："+items[i].price.toFixed(2)+"(元)，小计："+items[i].subtotal.toFixed(2)+"(元)\n"
+  }
+   content += "----------------------\n总计：";
+   content += total.toFixed(2);
+   content +="(元)\n**********************";
+  console.log(content);
+  return content;
 }
 
-var outputItems=nameUnitPrice(ldAllItems,inputItems);
-console.log(outputItems);
-
-
-
-
+printReceipt(inputs);
